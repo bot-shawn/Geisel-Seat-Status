@@ -7,7 +7,7 @@ DB_PATH = 'data/geisel_seats.db'
 # We want to be able to simulate the data moving around
 
 def start_simulation():
-    print('Simulation Starting')
+    print('Simulation Starting press control + c to stop simulation')
 
     while True:
         try:
@@ -16,12 +16,12 @@ def start_simulation():
 
                 floor_id = random.choice([1, 2, 4, 8])
 
-                change = random.radiant(5, -5)
+                change = random.randint(-5, 5)
 
                 cursor.execute('''
                                UPDATE floor_status
-                               SET occupied_seats = MAX(0, MIN(total_seats, occupied_seats + ?))
-                                    last_occupied = ?
+                               SET occupied_seats = MAX(0, MIN(total_seats, occupied_seats + ?)),
+                                    last_updated = ?
                                WHERE floor_id = ?
                                ''', (change, datetime.now(), floor_id))
                 conn.commit()
