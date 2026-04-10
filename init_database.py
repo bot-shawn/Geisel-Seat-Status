@@ -34,31 +34,45 @@ def initialize():
     # Entering the seed data for testing
     print("Setting up data")
     floors = [
-        (1, '1st Floor (Social)', 'Lower Floor West', 200, 120, 'Social', 1, datetime.now()),
-        (1, '1st Floor (Quiet)', 'Lower Floor East', 200, 120, 'Social', 1, datetime.now()),
-        (2, '2nd Floor (Main)', 'Geisel East', 300, 290, 'Social', 1, datetime.now()),
-        (2, '2nd Floor (Main)', 'Geisel West', 300, 290, 'Social', 1, datetime.now()),
-        (4, '4th Floor (Quiet)', 'Call Numbers A-D', 150, 45, 'Quiet', 1, datetime.now()),
-        (4, '4th Floor (Quiet)', 'Call Numbers D-HG', 150, 45, 'Quiet', 1, datetime.now()),
-        (4, '4th Floor (Quiet)', 'Call Numbers HG-PL', 150, 45, 'Quiet', 1, datetime.now()),
-        (4, '4th Floor (Quiet)', 'Call Numbers PL-ZA', 150, 45, 'Quiet', 1, datetime.now()),
-        (5, '5th Floor (Quiet)', 'Call Numbers A-BS', 150, 50, 'Quiet', 1, datetime.now()),
-        (5, '5th Floor (Quiet)', 'Call Numbers BT-DF', 150, 50, 'Quiet', 1, datetime.now()),
-        (5, '5th Floor (Quiet)', 'Call Numbers DG-E', 150, 50, 'Quiet', 1, datetime.now()),
-        (5, '5th Floor (Quiet)', 'Call Numbers E-F', 150, 50, 'Quiet', 1, datetime.now()),
-        (6, '6th Floor (Quiet)', 'Call Numbers G-HD', 150, 60, 'Quiet', 1, datetime.now()),
-        (6, '6th Floor (Quiet)', 'Call Numbers HD-JC', 150, 60, 'Quiet', 1, datetime.now()),
-        (6, '6th Floor (Quiet)', 'Call Numbers JF-LG', 150, 60, 'Quiet', 1, datetime.now()),
-        (6, '6th Floor (Quiet)', 'Oversized Materials', 150, 60, 'Quiet', 1, datetime.now()),
-        (7, '7th Floor (Quiet)', 'Call Numbers P-PN', 150, 70, 'Quiet', 1, datetime.now()),
-        (7, '7th Floor (Quiet)', 'Call Numbers PN-PQ', 150, 70, 'Quiet', 1, datetime.now()),
-        (7, '7th Floor (Quiet)', 'Call Numbers PQ-PS', 150, 70, 'Quiet', 1, datetime.now()),
-        (7, '7th Floor (Quiet)', 'Call Numbers PS-PT', 150, 70, 'Quiet', 1, datetime.now()),
-        (8, '8th Floor (Silent)','Call Numbers Z4-Z253', 100, 98, 'Silent', 0, datetime.now()),
-        (8, '8th Floor (Silent)','Call Numbers Z473-Z731', 100, 98, 'Silent', 0, datetime.now()),
-        (8, '8th Floor (Silent)','Call Numbers Z731-Z2010', 100, 98, 'Silent', 0, datetime.now()),
-        (8, '8th Floor (Silent)','Call Numbers Z2012-ZA', 100, 98, 'Silent', 0, datetime.now()),
-    ]
+            # 1st Floor (Total ~670) - Collaborative/Social
+            (1, '1st Floor (Quiet)', 'Lower Floor East', 150, 45, 'Quiet', 1, datetime.now()),
+            (1, '1st Floor (Social)', 'Lower Floor West', 520, 110, 'Social', 1, datetime.now()),
+            
+            # 2nd Floor (Total ~1080) - High Traffic Commons
+            (2, '2nd Floor (Main)', 'Geisel East', 620, 245, 'Social', 1, datetime.now()),
+            (2, '2nd Floor (Main)', 'Geisel West', 460, 180, 'Social', 1, datetime.now()),
+            
+            # 4th Floor (Total ~80) - Specialized/Quiet
+            (4, '4th Floor (Quiet)', 'Call Numbers A-D', 20, 4, 'Quiet', 1, datetime.now()),
+            (4, '4th Floor (Quiet)', 'Call Numbers D-HG', 20, 7, 'Quiet', 1, datetime.now()),
+            (4, '4th Floor (Quiet)', 'Call Numbers HG-PL', 20, 3, 'Quiet', 1, datetime.now()),
+            (4, '4th Floor (Quiet)', 'Call Numbers PL-ZA', 20, 11, 'Quiet', 1, datetime.now()),
+            
+            # 5th Floor (Total ~155) - Quiet Study
+            (5, '5th Floor (Quiet)', 'Call Numbers A-BS', 40, 12, 'Quiet', 1, datetime.now()),
+            (5, '5th Floor (Quiet)', 'Call Numbers BT-DF', 40, 15, 'Quiet', 1, datetime.now()),
+            (5, '5th Floor (Quiet)', 'Call Numbers DG-E', 35, 10, 'Quiet', 1, datetime.now()),
+            (5, '5th Floor (Quiet)', 'Call Numbers E-F', 40, 18, 'Quiet', 1, datetime.now()),
+            
+            # 6th Floor (Total ~440) - Largest Tower Floor
+            (6, '6th Floor (Quiet)', 'Call Numbers G-HD', 110, 45, 'Quiet', 1, datetime.now()),
+            (6, '6th Floor (Quiet)', 'Call Numbers HD-JC', 110, 52, 'Quiet', 1, datetime.now()),
+            (6, '6th Floor (Quiet)', 'Call Numbers JF-LG', 110, 40, 'Quiet', 1, datetime.now()),
+            (6, '6th Floor (Quiet)', 'Oversized Materials', 110, 38, 'Quiet', 1, datetime.now()),
+            
+            # 7th Floor (Total ~195) - Quiet Study
+            (7, '7th Floor (Quiet)', 'Call Numbers P-PN', 50, 25, 'Quiet', 1, datetime.now()),
+            (7, '7th Floor (Quiet)', 'Call Numbers PN-PQ', 50, 22, 'Quiet', 1, datetime.now()),
+            (7, '7th Floor (Quiet)', 'Call Numbers PQ-PS', 45, 18, 'Quiet', 1, datetime.now()),
+            (7, '7th Floor (Quiet)', 'Call Numbers PS-PT', 50, 28, 'Quiet', 1, datetime.now()),
+            
+            # 8th Floor (Total ~165) - Silent Study
+            (8, '8th Floor (Silent)', 'Call Numbers Z4-Z253', 40, 38, 'Silent', 0, datetime.now()),
+            (8, '8th Floor (Silent)', 'Call Numbers Z473-Z731', 40, 35, 'Silent', 0, datetime.now()),
+            (8, '8th Floor (Silent)', 'Call Numbers Z731-Z2010', 45, 42, 'Silent', 0, datetime.now()),
+            (8, '8th Floor (Silent)', 'Call Numbers Z2012-ZA', 40, 39, 'Silent', 0, datetime.now()),
+        ]    
+
     # Inserting in each rows
     print("INSERTING")
     cursor.executemany('INSERT OR REPLACE INTO floor_status VALUES (?,?,?,?,?,?,?,?)', floors)

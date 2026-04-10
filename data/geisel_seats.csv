@@ -1,0 +1,25 @@
+floor_id,floor_name,floor_section,total_seats,occupied_seats,noise_level,has_outlets,last_updated
+1,1st Floor (Quiet),Lower Floor East,150,45,Quiet,1,2026-04-10 00:38:52.626833
+1,1st Floor (Social),Lower Floor West,520,110,Social,1,2026-04-10 00:38:52.626842
+2,2nd Floor (Main),Geisel East,620,245,Social,1,2026-04-10 00:38:52.626842
+2,2nd Floor (Main),Geisel West,460,180,Social,1,2026-04-10 00:38:52.626843
+4,4th Floor (Quiet),Call Numbers A-D,20,4,Quiet,1,2026-04-10 00:38:52.626843
+4,4th Floor (Quiet),Call Numbers D-HG,20,7,Quiet,1,2026-04-10 00:38:52.626843
+4,4th Floor (Quiet),Call Numbers HG-PL,20,3,Quiet,1,2026-04-10 00:38:52.626843
+4,4th Floor (Quiet),Call Numbers PL-ZA,20,11,Quiet,1,2026-04-10 00:38:52.626844
+5,5th Floor (Quiet),Call Numbers A-BS,40,12,Quiet,1,2026-04-10 00:38:52.626844
+5,5th Floor (Quiet),Call Numbers BT-DF,40,15,Quiet,1,2026-04-10 00:38:52.626844
+5,5th Floor (Quiet),Call Numbers DG-E,35,10,Quiet,1,2026-04-10 00:38:52.626844
+5,5th Floor (Quiet),Call Numbers E-F,40,18,Quiet,1,2026-04-10 00:38:52.626845
+6,6th Floor (Quiet),Call Numbers G-HD,110,45,Quiet,1,2026-04-10 00:38:52.626845
+6,6th Floor (Quiet),Call Numbers HD-JC,110,52,Quiet,1,2026-04-10 00:38:52.626845
+6,6th Floor (Quiet),Call Numbers JF-LG,110,40,Quiet,1,2026-04-10 00:38:52.626846
+6,6th Floor (Quiet),Oversized Materials,110,38,Quiet,1,2026-04-10 00:38:52.626846
+7,7th Floor (Quiet),Call Numbers P-PN,50,25,Quiet,1,2026-04-10 00:38:52.626846
+7,7th Floor (Quiet),Call Numbers PN-PQ,50,22,Quiet,1,2026-04-10 00:38:52.626846
+7,7th Floor (Quiet),Call Numbers PQ-PS,45,18,Quiet,1,2026-04-10 00:38:52.626847
+7,7th Floor (Quiet),Call Numbers PS-PT,50,28,Quiet,1,2026-04-10 00:38:52.626847
+8,8th Floor (Silent),Call Numbers Z4-Z253,40,38,Silent,0,2026-04-10 00:38:52.626847
+8,8th Floor (Silent),Call Numbers Z473-Z731,40,35,Silent,0,2026-04-10 00:38:52.626847
+8,8th Floor (Silent),Call Numbers Z731-Z2010,45,42,Silent,0,2026-04-10 00:38:52.626849
+8,8th Floor (Silent),Call Numbers Z2012-ZA,40,39,Silent,0,2026-04-10 00:38:52.626849
