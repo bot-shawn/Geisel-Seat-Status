@@ -21,6 +21,7 @@ def initialize():
         CREATE TABLE IF NOT EXISTS floor_status (
             floor_id INTEGER PRIMARY KEY,
             floor_name TEXT,
+            floor_section TEXT,
             total_seats INTEGER,
             occupied_seats INTEGER,
             noise_level TEXT,
@@ -32,10 +33,30 @@ def initialize():
     # Entering the seed data for testing
     print("Setting up data")
     floors = [
-        (1, '1st Floor (Social)', 200, 120, 'Social', 1, datetime.now()),
-        (2, '2nd Floor (Main)', 300, 290, 'Social', 1, datetime.now()),
-        (4, '4th Floor (Quiet)', 150, 45, 'Quiet', 1, datetime.now()),
-        (8, '8th Floor (Silent)', 100, 98, 'Silent', 0, datetime.now())
+        (1, '1st Floor (Social)', 'Lower Floor West', 200, 120, 'Social', 1, datetime.now()),
+        (1, '1st Floor (Quiet)', 'Lower Floor East', 200, 120, 'Social', 1, datetime.now()),
+        (2, '2nd Floor (Main)', 'Geisel East', 300, 290, 'Social', 1, datetime.now()),
+        (2, '2nd Floor (Main)', 'Geisel West', 300, 290, 'Social', 1, datetime.now()),
+        (4, '4th Floor (Quiet)', 'Call Numbers A-D', 150, 45, 'Quiet', 1, datetime.now()),
+        (4, '4th Floor (Quiet)', 'Call Numbers D-HG', 150, 45, 'Quiet', 1, datetime.now()),
+        (4, '4th Floor (Quiet)', 'Call Numbers HG-PL', 150, 45, 'Quiet', 1, datetime.now()),
+        (4, '4th Floor (Quiet)', 'Call Numbers PL-ZA', 150, 45, 'Quiet', 1, datetime.now()),
+        (5, '5th Floor (Quiet)', 'Call Numbers A-BS', 150, 50, 'Quiet', 1, datetime.now()),
+        (5, '5th Floor (Quiet)', 'Call Numbers BT-DF', 150, 50, 'Quiet', 1, datetime.now()),
+        (5, '5th Floor (Quiet)', 'Call Numbers DG-E', 150, 50, 'Quiet', 1, datetime.now()),
+        (5, '5th Floor (Quiet)', 'Call Numbers E-F', 150, 50, 'Quiet', 1, datetime.now()),
+        (6, '6th Floor (Quiet)', 'Call Numbers G-HD', 150, 60, 'Quiet', 1, datetime.now()),
+        (6, '6th Floor (Quiet)', 'Call Numbers HD-JC', 150, 60, 'Quiet', 1, datetime.now()),
+        (6, '6th Floor (Quiet)', 'Call Numbers JF-LG', 150, 60, 'Quiet', 1, datetime.now()),
+        (6, '6th Floor (Quiet)', 'Oversized Materials', 150, 60, 'Quiet', 1, datetime.now()),
+        (7, '7th Floor (Quiet)', 'Call Numbers P-PN', 150, 70, 'Quiet', 1, datetime.now()),
+        (7, '7th Floor (Quiet)', 'Call Numbers PN-PQ', 150, 70, 'Quiet', 1, datetime.now()),
+        (7, '7th Floor (Quiet)', 'Call Numbers PQ-PS', 150, 70, 'Quiet', 1, datetime.now()),
+        (7, '7th Floor (Quiet)', 'Call Numbers PS-PT', 150, 70, 'Quiet', 1, datetime.now()),
+        (8, '8th Floor (Silent)','Call Numbers Z4-Z253', 100, 98, 'Silent', 0, datetime.now()),
+        (8, '8th Floor (Silent)','Call Numbers Z473-Z731', 100, 98, 'Silent', 0, datetime.now()),
+        (8, '8th Floor (Silent)','Call Numbers Z731-Z2010', 100, 98, 'Silent', 0, datetime.now()),
+        (8, '8th Floor (Silent)','Call Numbers Z2012-ZA', 100, 98, 'Silent', 0, datetime.now()),
     ]
     # Inserting in each rows
     print("INSERTING")
