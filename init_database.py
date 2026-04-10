@@ -19,14 +19,15 @@ def initialize():
     print("Creating table")
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS floor_status (
-            floor_id INTEGER PRIMARY KEY,
+            floor_id INTEGER,
             floor_name TEXT,
             floor_section TEXT,
             total_seats INTEGER,
             occupied_seats INTEGER,
             noise_level TEXT,
             has_outlets BOOLEAN,
-            last_updated DATETIME
+            last_updated DATETIME,
+            PRIMARY KEY (floor_id, floor_section)
         )
     ''')
 
@@ -60,7 +61,7 @@ def initialize():
     ]
     # Inserting in each rows
     print("INSERTING")
-    cursor.executemany('INSERT OR REPLACE INTO floor_status VALUES (?,?,?,?,?,?,?)', floors)    
+    cursor.executemany('INSERT OR REPLACE INTO floor_status VALUES (?,?,?,?,?,?,?,?)', floors)
 
     # commiting the tables
     conn.commit()
