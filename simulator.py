@@ -2,6 +2,8 @@ import sqlite3
 import random
 import time
 from datetime import datetime
+from export_data import export
+
 
 def start_simulation():
     conn = sqlite3.connect('data/geisel_seats.db')
@@ -29,6 +31,7 @@ def start_simulation():
             ''', (change, datetime.now(), floor_id, section_name))
             
             conn.commit()
+            export()
             
             # Print status so you can see it's working
             direction = "arrived at" if change > 0 else "left"
