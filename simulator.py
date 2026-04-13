@@ -1,48 +1,49 @@
 import sqlite3
-import random
 import time
-from datetime import datetime
-from export_data import export
+import random
+from export_data import export, update_app_data
 
-
-def start_simulation():
+def run_simulation():
     conn = sqlite3.connect('data/geisel_seats.db')
     cursor = conn.cursor()
-    print("Simulation Starting... Ctrl+C to stop")
+
+    print("Geisel Seat Simulator Started...")
+    print("Press Crtl+C to end")
 
     try:
         while True:
-            # Get all available sections from the database
-            cursor.execute("SELECT floor_id, floor_section, total_seats, occupied_seats FROM floor_status")
-            sections = cursor.fetchall()
+            # 1. Get floor info using your actual column names
+            cursor.execute("SELECT floor_id, floor_section, total_seats, occupied_seats, floor_name FROM floor_status")
+            floors = cursor.fetchall()
+            f_id, section, total, occupied, f_name = random.choice(floors)
             
-            # Pick a random section to update
-            floor_id, section_name, total, current = random.choice(sections)
+            # 2. Randomly change occupied seats
+            change = random.choice([-1, 1])
+            new_occupied = max(0, min(total, occupied + change))
             
-            # Simulating people coming (+1 to +3) or leaving (-1 to -3)
-            change = random.randint(-3, 3)
-            
-            # Update the DB for that specific SECTION
-            cursor.execute('''
-                UPDATE floor_status 
-                SET occupied_seats = MAX(0, MIN(total_seats, occupied_seats + ?)),
-                    last_updated = ?
-                WHERE floor_id = ? AND floor_section = ?
-            ''', (change, datetime.now(), floor_id, section_name))
-            
+            # 3. Update the Database
+            cursor.execute("UPDATE floor_status SET occupied_seats = ? WHERE floor_id = ? AND floor_section = ?", 
+                           (new_occupied, f_id, section))
             conn.commit()
-            export()
+
+            # 4. Calculate counts for the Mobile App
+            cursor.execute("SELECT floor_name, SUM(total_seats - occupied_seats) FROM floor_status GROUP BY floor_name")
+            rows = cursor.fetchall()
             
-            # Print status so you can see it's working
-            direction = "arrived at" if change > 0 else "left"
-            print(f"{abs(change)} students {direction} {section_name} (Floor {floor_id})")
-            
-            # Wait a second before the next simulation
-            time.sleep(1)
+            current_floor_dict = {row[0]: row[1] for row in rows}
+            current_total = sum(current_floor_dict.values())
+
+            # 5. Sync to Tableau and iPhone
+            export() 
+            update_app_data(current_total, current_floor_dict)
+
+            print(f"Update: {f_name} ({section}) now has {total - new_occupied} seats free.")
+            time.sleep(2)
 
     except KeyboardInterrupt:
-        print("Simulation stopped.")
+        print("\nStopping...")
+    finally:
         conn.close()
 
 if __name__ == "__main__":
-    start_simulation()
+    run_simulation()
