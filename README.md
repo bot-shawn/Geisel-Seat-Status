@@ -1,4 +1,4 @@
-# Geisel-Seat-Finder
+# Geisel-Seat-Status
 
 Our project is a prototype that would help transfer student quickly get information for Geisel Library. Many transfer students are commuters that lives off comapus. Unlike many of the freshmans that usually tends to live on campus for at least for their first year and has a long time figuring out everything on campus. Transfer students only have 2 years. 
 This prototype software will show the Geisel Library occupancy by sections on each floor. We want to make finding a seat easier for transfer students that are not familiar with the busyness of the library. Transfer's usually rely on the library to get a place to rest or study, so Geisel library is a big asset to them. 
