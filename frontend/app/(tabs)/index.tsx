@@ -12,7 +12,7 @@ export default function GeiselApp() {
   const [selectedFloor, setSelectedFloor] = useState<string | null>(null);
 
   // !!! IMPORTANT: Change this to your Mac's IP Address
-  const IP_ADDR = "192.168.1.XX"; 
+  const IP_ADDR = "192.168.1.68"; 
   const tableauURL = "https://public.tableau.com/views/geisellibraryheatmap/8thfloor?:embed=yes&:showVizHome=no&:toolbar=no&:device=mobile";
 
   // 2. LIVE DATA SYNC
