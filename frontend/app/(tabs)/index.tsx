@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Sta
 import { WebView } from 'react-native-webview';
 
 export default function GeiselApp() {
-  // 1. STATE - Fixed with proper types to remove red squiggles
+  // 1. STATE MANAGEMENT
   const [seatData, setSeatData] = useState<{
     total: number;
     floors: { [key: string]: number };
@@ -11,11 +11,19 @@ export default function GeiselApp() {
 
   const [selectedFloor, setSelectedFloor] = useState<string | null>(null);
 
-  // !!! IMPORTANT: Change this to your Mac's IP Address
+  // !!! IMPORTANT: Update this to your Mac's IP Address (Check System Settings > Wi-Fi)
   const IP_ADDR = "192.168.1.68"; 
   const tableauURL = "https://public.tableau.com/views/geisellibraryheatmap/8thfloor?:embed=yes&:showVizHome=no&:toolbar=no&:device=mobile";
 
-  // 2. LIVE DATA SYNC
+  // 2. DYNAMIC COLOR LOGIC (Heatmap)
+  const getHeatmapColor = (percentage: number) => {
+    if (percentage < 50) return "#22C55E"; // Green (Plenty of room)
+    if (percentage < 80) return "#FACC15"; // Yellow (Getting full)
+    if (percentage < 95) return "#E17100"; // Orange (Busy)
+    return "#EF4444";               // Red (Crowded)
+  };
+
+  // 3. LIVE DATA SYNC
   useEffect(() => {
     const interval = setInterval(async () => {
       try {
@@ -29,7 +37,7 @@ export default function GeiselApp() {
     return () => clearInterval(interval);
   }, []);
 
-  // 3. CHECK-IN FUNCTION
+  // 4. CHECK-IN ACTION
   const handleCheckIn = async () => {
     if (!selectedFloor) {
       Alert.alert("Wait!", "Please select a floor from the list first.");
@@ -41,7 +49,7 @@ export default function GeiselApp() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ floor: selectedFloor }),
       });
-      if (res.ok) Alert.alert("Success", `You are checked into ${selectedFloor}`);
+      if (res.ok) Alert.alert("Success", `Checked into ${selectedFloor}`);
     } catch (e) {
       Alert.alert("Offline", "Couldn't connect to the simulator.");
     }
@@ -51,7 +59,7 @@ export default function GeiselApp() {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />
       
-      {/* HEADER SECTION */}
+      {/* HEADER */}
       <View style={styles.header}>
         <View style={styles.headerContent}>
           <View>
@@ -72,55 +80,65 @@ export default function GeiselApp() {
       </View>
 
       <ScrollView style={styles.body}>
-        <Text style={styles.sectionTitle}>Select a Floor</Text>
+        <Text style={styles.sectionTitle}>Floor Availability</Text>
 
         {/* MAP EMBED */}
         <View style={styles.mapContainer}>
           <WebView source={{ uri: tableauURL }} style={styles.webview} scrollEnabled={false} />
         </View>
 
-        {/* FULL FLOOR LIST */}
+        {/* DYNAMIC FLOOR LIST */}
         {[
-          { id: "1st Floor (Social)", label: "1st Floor East", type: "Collaborative", pct: "83%", color: "#E17100" },
-          { id: "1st Floor (Quiet)", label: "1st Floor West", type: "Quiet", pct: "79%", color: "#E17100" },
-          { id: "2nd Floor (Main)", label: "2nd Floor", type: "Collaborative", pct: "85%", color: "#E17100" },
-          { id: "4th Floor (Quiet)", label: "4th Floor", type: "Quiet", pct: "94%", color: "#E7000B" },
-          { id: "5th Floor (Quiet)", label: "5th Floor", type: "Quiet", pct: "88%", color: "#E7000B" },
-          { id: "6th Floor (Quiet)", label: "6th Floor", type: "Quiet", pct: "90%", color: "#E7000B" },
-          { id: "7th Floor (Quiet)", label: "7th Floor", type: "Quiet", pct: "92%", color: "#E7000B" },
-          { id: "8th Floor (Silent)", label: "8th Floor", type: "Silent", pct: "97%", color: "#E7000B" }
-        ].map((f) => (
-          <TouchableOpacity 
-            key={f.id} 
-            onPress={() => setSelectedFloor(f.id)}
-            style={[styles.card, selectedFloor === f.id && styles.selectedCard]}
-          >
-            <View style={styles.leftBadge}>
-              <Text style={styles.leftLabel}>Left</Text>
-              <Text style={[styles.leftCount, { color: f.color }]}>{seatData.floors[f.id] || 0}</Text>
-            </View>
-            <View style={styles.cardInfo}>
-              <View style={styles.cardTitleRow}>
-                <Text style={styles.floorName}>{f.label}</Text>
-                <View style={styles.tagContainer}><Text style={styles.tagText}>{f.type}</Text></View>
+          { id: "1st Floor (Social)", label: "1st Floor East", type: "Collaborative", cap: 500 },
+          { id: "1st Floor (Quiet)", label: "1st Floor West", type: "Quiet", cap: 600 },
+          { id: "2nd Floor (Main)", label: "2nd Floor", type: "Collaborative", cap: 1000 },
+          { id: "4th Floor (Quiet)", label: "4th Floor", type: "Quiet", cap: 200 },
+          { id: "5th Floor (Quiet)", label: "5th Floor", type: "Quiet", cap: 200 },
+          { id: "6th Floor (Quiet)", label: "6th Floor", type: "Quiet", cap: 300 },
+          { id: "7th Floor (Quiet)", label: "7th Floor", type: "Quiet", cap: 150 },
+          { id: "8th Floor (Silent)", label: "8th Floor", type: "Silent", cap: 50 }
+        ].map((f) => {
+          const available = seatData.floors[f.id] || 0;
+          const occupied = f.cap - available;
+          const rawPct = (occupied / f.cap) * 100;
+          const livePctStr = `${Math.min(100, Math.max(0, rawPct))}%`;
+          const dynamicColor = getHeatmapColor(rawPct);
+
+          return (
+            <TouchableOpacity 
+              key={f.id} 
+              onPress={() => setSelectedFloor(f.id)}
+              style={[styles.card, selectedFloor === f.id && styles.selectedCard]}
+            >
+              <View style={styles.leftBadge}>
+                <Text style={styles.leftLabel}>Left</Text>
+                <Text style={[styles.leftCount, { color: dynamicColor }]}>{available}</Text>
               </View>
-              <View style={styles.progressBg}>
-                <View style={[
-                  styles.progressFill, 
-                  { width: f.pct as any, backgroundColor: f.color } // Added 'as any' here
-                ]} />
+              <View style={styles.cardInfo}>
+                <View style={styles.cardTitleRow}>
+                  <Text style={styles.floorName}>{f.label}</Text>
+                  <View style={styles.tagContainer}><Text style={styles.tagText}>{f.type}</Text></View>
+                </View>
+                <View style={styles.progressBg}>
+                  <View style={[
+                    styles.progressFill, 
+                    { width: livePctStr as any, backgroundColor: dynamicColor }
+                  ]} />
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
-        ))}
+            </TouchableOpacity>
+          );
+        })}
       </ScrollView>
 
-      {/* CHECK-IN BUTTON */}
-      <TouchableOpacity style={styles.checkInBtn} onPress={handleCheckIn}>
-        <Text style={styles.checkInText}>
-          {selectedFloor ? `Check Into ${selectedFloor.split(' ')[0]} Floor` : "Select a Floor"}
-        </Text>
-      </TouchableOpacity>
+      {/* CHECK-IN FOOTER */}
+      <View style={styles.footer}>
+        <TouchableOpacity style={styles.checkInBtn} onPress={handleCheckIn}>
+          <Text style={styles.checkInText}>
+            {selectedFloor ? `Check Into ${selectedFloor.split(' ')[0]} Floor` : "Select a Floor Above"}
+          </Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
@@ -140,7 +158,7 @@ const styles = StyleSheet.create({
   totalAvailableLabel: { color: 'white', fontSize: 10, fontWeight: '600' },
   body: { padding: 16 },
   sectionTitle: { fontSize: 18, fontWeight: '700', marginBottom: 16, color: '#1E2939' },
-  mapContainer: { height: 300, backgroundColor: '#fff', borderRadius: 14, overflow: 'hidden', marginBottom: 20, borderWidth: 1, borderColor: '#E5E7EB' },
+  mapContainer: { height: 280, backgroundColor: '#fff', borderRadius: 14, overflow: 'hidden', marginBottom: 20, borderWidth: 1, borderColor: '#E5E7EB' },
   webview: { flex: 1 },
   card: { flexDirection: 'row', backgroundColor: 'white', padding: 16, borderRadius: 14, marginBottom: 12, borderWidth: 1, borderColor: '#E5E7EB' },
   selectedCard: { borderColor: '#1447E6', backgroundColor: '#F0F7FF', borderWidth: 2 },
@@ -150,10 +168,11 @@ const styles = StyleSheet.create({
   cardInfo: { flex: 1, justifyContent: 'center' },
   cardTitleRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 },
   floorName: { fontSize: 16, fontWeight: '700', color: '#101828' },
-  tagContainer: { backgroundColor: '#E5E7EB', paddingHorizontal: 6, borderRadius: 8 },
-  tagText: { fontSize: 10, fontWeight: '600', color: '#4B5563' },
-  progressBg: { height: 6, backgroundColor: '#F3F4F6', borderRadius: 3 },
+  tagContainer: { backgroundColor: '#E5E7EB', paddingHorizontal: 6, borderRadius: 8, height: 18, justifyContent: 'center' },
+  tagText: { fontSize: 9, fontWeight: '700', color: '#4B5563' },
+  progressBg: { height: 6, backgroundColor: '#F3F4F6', borderRadius: 3, overflow: 'hidden' },
   progressFill: { height: 6, borderRadius: 3 },
-  checkInBtn: { backgroundColor: '#182B49', margin: 20, padding: 18, borderRadius: 15, alignItems: 'center', elevation: 5 },
+  footer: { backgroundColor: 'white', borderTopWidth: 1, borderColor: '#E5E7EB' },
+  checkInBtn: { backgroundColor: '#182B49', margin: 16, padding: 18, borderRadius: 15, alignItems: 'center' },
   checkInText: { color: 'white', fontWeight: 'bold', fontSize: 18 }
 });
